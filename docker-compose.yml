@@ -1,1 +1,30 @@
-# env_file:.env
+ 
+version: '3.9'
+
+networks:
+  jimmybottt:
+    driver: bridge
+
+services:
+
+  bot:
+  init: true
+  container_name: bot
+  build:
+    context: ./requirements/bot
+  image: bot
+  restart: unless-stopped
+  networks:
+  - jimmybottt
+
+  database:
+    init: true
+    container_name: database
+    build:
+      context: ./requirements/database
+    image: database
+    environment:
+      .env
+    restart: unless-stopped
+    networks:
+      - jimmybottt
