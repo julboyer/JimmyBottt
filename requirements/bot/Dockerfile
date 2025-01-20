@@ -1,19 +1,19 @@
 FROM debian:latest
 
-RUN apt update && apt upgrade
-RUN apt install nodejs \
+RUN apt update && apt upgrade -y
+RUN apt install -y nodejs \
 				npm
+
+
 
 # Map /app as working directory in container.
 WORKDIR /app
+# COPY ../../.env .
 
 # Copy local package files to container and install those dependencies.
-COPY ./app/package*.json ./
+COPY ./app/ .
 RUN npm install
 
-# Copy the other local app files and build the application.
-COPY ./app/ .
-RUN npm run build
 
 # Run NPM.
 CMD ["npm", "run", "start"]

@@ -1,6 +1,3 @@
- 
-version: '3.9'
-
 networks:
   jimmybottt:
     driver: bridge
@@ -8,23 +5,35 @@ networks:
 services:
 
   bot:
-  init: true
-  container_name: bot
-  build:
-    context: ./requirements/bot
-  image: bot
-  restart: unless-stopped
-  networks:
-  - jimmybottt
+    init: true
+    container_name: bot
+    image: bot
+    build:
+      context: ./requirements/bot
+    env_file:
+      - ./.env
+    restart: unless-stopped
+    networks :
+      - jimmybottt
 
   database:
     init: true
     container_name: database
+    image: database
     build:
       context: ./requirements/database
-    image: database
-    environment:
-      .env
+    env_file:
+      - path: ./.env
     restart: unless-stopped
-    networks:
+    networks :
       - jimmybottt
+    volumes:
+      - database:/var/lib/mysql
+
+volumes:
+  database :
+    driver : local
+    driver_opts:
+      type: none
+      device : ./mariadb
+      o: bind
