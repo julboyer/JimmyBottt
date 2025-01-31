@@ -1,4 +1,4 @@
-const { Client, Events, GatewayIntentBits, Collection, MessageFlags } = require('discord.js');
+const { Client, Events, GatewayIntentBits, Collection, MessageFlags, Message, EmbedBuilder, ActionRow, ActionRowBuilder, ButtonBuilder, ButtonStyle, messageLink, ChannelType, CategoryChannelChildManager} = require('discord.js');
 require('dotenv').config();
 // console.log(process.env);
 const token = process.env.DISCORD_TOKEN;
@@ -47,6 +47,22 @@ client.on(Events.InteractionCreate, async interaction => {
 		} else {
 			await interaction.reply({ content: 'There was an error while executing this command!', flags: MessageFlags.Ephemeral });
 		}
+	}
+});
+
+client.on('interactionCreate', async interaction => {
+    if (!interaction.isButton()) return;
+	if (interaction.customId === 'ticket')
+	{
+		interaction.deferReply();
+		const channel = interaction.channel;
+		var server = interaction.guild;
+		var category = server.channels.cache.find(channel => channel.type == ChannelType.GuildCategory && channel.name == "ModMail");
+		category.children.create({name : interaction.user.username, //Create a channel with the same name as the user who clicked the button
+								type : ChannelType.GuildText,
+								});
+		interaction.deleteReply();
+		// console.log(interaction);
 	}
 });
 
