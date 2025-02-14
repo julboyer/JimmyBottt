@@ -5,8 +5,8 @@ mysql -e "CREATE DATABASE IF NOT EXISTS \`${SQL_DATABASE}\`;"
 mysql -e "USE \`${SQL_DATABASE}\`;
 	CREATE TABLE IF NOT EXISTS TICKETS (
 	ticketsID INT AUTO_INCREMENT UNIQUE NOT NULL,
-	channelID INT UNIQUE NOT NULL,
-	userID INT NOT NULL,
+	channelID VARCHAR(32) UNIQUE NOT NULL,
+	userID VARCHAR(32) NOT NULL,
 	logFile VARCHAR(32) NOT NULL,
 	PRIMARY KEY(ticketsID)
 	);
@@ -17,7 +17,7 @@ mysql -e "USE \`${SQL_DATABASE}\`;
     FOREIGN KEY (ticketsID) REFERENCES TICKETS (ticketsID),
     PRIMARY KEY(attachmentID)
 	);"
-mysql -e "CREATE USER IF NOT EXISTS \`${SQL_USER}\`@'localhost' IDENTIFIED BY '${SQL_PASSWORD}';"
+mysql -e "CREATE USER IF NOT EXISTS \`${SQL_USER}\`@\`*\` IDENTIFIED BY '${SQL_PASSWORD}';"
 #identifie l'utilisateur créé juste avant comme l'administrateur
 mysql -e "GRANT ALL PRIVILEGES ON \`${SQL_DATABASE}\`.* TO \`${SQL_USER}\`@'%' IDENTIFIED BY '${SQL_PASSWORD}';"
 mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${SQL_ROOT_PASSWORD}';"
