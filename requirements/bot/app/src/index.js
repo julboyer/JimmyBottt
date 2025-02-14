@@ -4,6 +4,16 @@ require('dotenv').config();
 const token = process.env.DISCORD_TOKEN;
 const path = require('node:path');
 const fs = require('node:fs');
+const knex = require('knex')({
+	client: 'mysql',
+	connection: {
+	  host: 'database',
+	  port: 3306,
+	  user: process.env.SQL_USER,
+	  password: process.env.SQL_PASSWORD,
+	  database: process.env.SQL_DATABASE,
+	},
+  });
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
@@ -55,14 +65,27 @@ client.on('interactionCreate', async interaction => {
 	if (interaction.customId === 'ticket')
 	{
 		interaction.deferReply();
-		const channel = interaction.channel;
+		
 		var server = interaction.guild;
 		var category = server.channels.cache.find(channel => channel.type == ChannelType.GuildCategory && channel.name == "ModMail");
-		category.children.create({name : interaction.user.username, //Create a channel with the same name as the user who clicked the button
+		const channel = await category.children.create({name : interaction.user.username, //Create a channel with the same name as the user who clicked the button
 								type : ChannelType.GuildText,
 								});
+		console.log(channel);
 		interaction.deleteReply();
-		// console.log(interaction);
+		var ret = await knex('TICKETS').insert({
+			channelID : channel.id,
+			userID : interaction.user.id,
+			logFile : 'test.txt'
+		});
+		// .into('TICKETS');
+		console.log('================================================================================================');
+		console.log(ret);
+	}
+	else 
+	{
+		console.log('button test');
+		return;
 	}
 });
 
