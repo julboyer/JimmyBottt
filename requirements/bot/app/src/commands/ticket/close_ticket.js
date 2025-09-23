@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, PermissionFlagsBits, InteractionContextType, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits, InteractionContextType, ButtonBuilder, ButtonStyle, ActionRowBuilder, ChannelType } = require('discord.js');
 const { execute } = require('./startup');
 
 module.exports = {
@@ -10,6 +10,7 @@ module.exports = {
 
 	async execute(interaction){
 		const channel = interaction.channel;
+		var server = interaction.guild;
 		
 		const confirm = new ButtonBuilder()
 			.setCustomId('confirm')
@@ -33,16 +34,17 @@ module.exports = {
 		const collectorFilter = i => i.user.id === interaction.user.id;
 
 		try {
-			console.log(response);
+			// console.log(response);
 			const confirmation = await response.awaitMessageComponent({ filter: collectorFilter, time: 60_000 });
-			// var category = server.channels.cache.find(channel => channel.type == ChannelType.GuildCategory && channel.name == "ModMail");
-			console.log(confirmation);
+			var category = server.channels.cache.find(channel => channel.type == ChannelType.GuildCategory && channel.name == "ModMail");
+			console.log(category);
 			if (confirmation.customId === 'confirm')
 		
 			{
-				console.log('button get');
+				console.log(confirmation.channel);
 				await confirmation.update('validé');
-				await interaction.channel.delete();
+				if (category === confirmation.channel.parent)
+					await interaction.channel.delete();
 			}
 		} catch (error) {
 			console.error('CATCH');
