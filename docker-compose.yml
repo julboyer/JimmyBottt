@@ -30,7 +30,7 @@ services:
     ports:
       - 3306:3306
     volumes:
-      - ./requirements/database:/var/lib/mysql
+      - ./mariadb:/var/lib/mysql
 
 volumes:
   database :
