@@ -1,5 +1,3 @@
-version: '3.9'
-
 networks:
   jimmybottt:
     driver: bridge
@@ -39,5 +37,5 @@ volumes:
     driver : local
     driver_opts:
       type: none
-      device : ${PWD}/mariadb/
+      device : ${PWD}/requirements/database/data
       o: bind
