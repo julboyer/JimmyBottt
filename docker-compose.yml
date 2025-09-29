@@ -30,12 +30,12 @@ services:
     ports:
       - 3306:3306
     volumes:
-      - ./mariadb:/var/lib/mysql
+      - database:/var/lib/mysql
 
 volumes:
   database :
     driver : local
     driver_opts:
       type: none
-      device : mariadb
+      device : ./mariadb/
       o: bind
