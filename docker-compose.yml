@@ -15,6 +15,8 @@ services:
     restart: unless-stopped
     networks :
       - jimmybottt
+    volumes:
+      - files:/app/files
 
   database:
     init: true
@@ -38,4 +40,10 @@ volumes:
     driver_opts:
       type: none
       device : ${PWD}/requirements/database/data
+      o: bind
+  files :
+    driver : local
+    driver_opts:
+      type: none
+      device : ${PWD}/requirements/database/data/files
       o: bind
