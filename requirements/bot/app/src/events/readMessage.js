@@ -3,7 +3,7 @@ const {Events} = require('discord.js');
 module.exports = {
 	name:Events.MessageCreate,
 	autobanChannelId: "",
-	purgeMessageTime: 60, // temps en secondes
+	purgeMessageTime: 60 * 60, // temps en secondes
 	async execute(message){
 		if (message.channelId == this.autobanChannelId) {
 
