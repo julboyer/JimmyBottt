@@ -19,7 +19,7 @@ int main(){
     ConcreteCommandHandler handler;
     PingCommand ping_cmd;
 
-    handler.set_next(ping_cmd);
+    handler.set_next(&ping_cmd);
 
     // La fonction anonyme est un handler de TOUTES les commandes
     bot.on_slashcommand([](const slashcommand_t& event){
