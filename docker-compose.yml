@@ -1,0 +1,49 @@
+networks:
+  jimmybottt:
+    driver: bridge
+
+services:
+
+  bot:
+    init: true
+    container_name: bot
+    image: bot
+    build:
+      context: ./requirements/bot
+    env_file:
+      - ./.env
+    restart: unless-stopped
+    networks :
+      - jimmybottt
+    volumes:
+      - files:/app/files
+
+  database:
+    init: true
+    container_name: database
+    image: database
+    build:
+      context: ./requirements/database
+    env_file:
+      - path: ./.env
+    restart: unless-stopped
+    networks :
+      - jimmybottt
+    ports:
+      - 3306:3306
+    volumes:
+      - database:/var/lib/mysql
+
+volumes:
+  database :
+    driver : local
+    driver_opts:
+      type: none
+      device : ${PWD}/requirements/database/data
+      o: bind
+  files :
+    driver : local
+    driver_opts:
+      type: none
+      device : ${PWD}/requirements/database/data/files
+      o: bind
