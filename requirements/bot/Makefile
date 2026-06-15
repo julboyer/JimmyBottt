@@ -11,6 +11,7 @@ prepare:
 
 clean:
 	rm -r target
+	rm -r build
 
 build/%.o: src/%.cpp
 	mkdir -p $(dir $@)
