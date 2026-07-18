@@ -15,4 +15,4 @@ RUN make prepare
 RUN make build
 RUN rm -r build
 
-CMD [./target/jimmybott]
+CMD ./target/jimmybottt
