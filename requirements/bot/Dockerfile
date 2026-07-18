@@ -11,8 +11,7 @@ RUN apt install wget; wget -O dpp.deb https://dl.dpp.dev/; dpkg -i dpp.deb
 COPY ./Makefile .
 COPY ./src ./src
 
-RUN make prepare
-RUN make build
-RUN rm -r build
+RUN make
+RUN make clean
 
-CMD ./target/jimmybottt
+CMD ["./target/jimmybottt"]
