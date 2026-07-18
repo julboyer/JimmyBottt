@@ -7,7 +7,7 @@
 using namespace std;
 using namespace dpp;
 
-const string BOT_TOKEN = getenv("TOKEN");
+const string BOT_TOKEN = getenv("DISCORD_TOKEN");
 
 int main(){
 
