@@ -1,8 +1,10 @@
 #pragma once
 
 #include <dpp/dpp.h>
+#include <string>
 
 using namespace dpp;
+using namespace std;
 
 class TicketManager {
 

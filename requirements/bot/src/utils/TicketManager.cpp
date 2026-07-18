@@ -10,10 +10,19 @@ TicketManager::TicketManager(
 }
 
 void TicketManager::open(const snowflake user_id){
+    user* usr = find_user(user_id);
+    string username;
+
+    if (usr) {
+        username = usr->username;
+    } else {
+        username = "X";
+    }
+
     channel ch;
     
-    ch.name = "ticket-USER";
-    ch.topic = "Ticket n°X - Créé par USER";
+    ch.name = "ticket-" + username;
+    ch.topic = "Ticket n°X - Créé par " + username;
     ch.guild_id = this->guild_id;
     ch.parent_id = this->tickets_category_id;
 
