@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Commands.hpp"
+#include "commands/Commands.hpp"
 
 using namespace std;
 using namespace dpp;

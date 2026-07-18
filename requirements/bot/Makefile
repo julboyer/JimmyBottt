@@ -19,7 +19,7 @@ fclean: clean
 
 build/%.o: src/%.cpp
 	mkdir -p $(dir $@)
-	g++ -c $< -o $@ $(CXXFLAGS) $(DPP_FLAGS)
+	g++ -I ./src -c $< -o $@ $(CXXFLAGS) $(DPP_FLAGS)
 
 re: fclean all
 

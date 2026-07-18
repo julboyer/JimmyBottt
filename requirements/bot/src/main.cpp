@@ -3,6 +3,8 @@
 
 #include "commands/Commands.hpp"
 #include "commands/PingCommand.hpp"
+#include "utils/TicketManager.hpp"
+#include "commands/OpenTicketCommand.hpp"
 
 using namespace std;
 using namespace dpp;
@@ -13,6 +15,8 @@ const string BOT_TOKEN = getenv("DISCORD_TOKEN");
 // PS : Des strings, mais reloues
 const snowflake AUTOBAN_CHANNEL_ID = (snowflake) getenv("AUTOBAN_CHANNEL_ID");
 const snowflake LOGS_CHANNEL_ID = (snowflake) getenv("LOGS_CHANNEL_ID");
+const snowflake GUILD_ID = (snowflake) getenv("GUILD_ID");
+const snowflake SUPPORT_CATEGORY_ID = (snowflake) getenv("SUPPORT_CATEGORY_ID");
 
 int main(){
 
@@ -21,10 +25,15 @@ int main(){
     // Utilise le logger par défaut
     bot.on_log(utility::cout_logger());
 
+    TicketManager ticket_manager(bot, GUILD_ID, SUPPORT_CATEGORY_ID);
+
     PingCommand pingCommand;
+
+    OpenTicketCommand open_ticket_cmd(ticket_manager);
 
     CommandRegistry registry;
     registry.add(pingCommand);
+    registry.add(open_ticket_cmd);
 
     // La fonction anonyme est un handler de TOUTES les commandes
     bot.on_slashcommand([&bot, &registry](const slashcommand_t& event){

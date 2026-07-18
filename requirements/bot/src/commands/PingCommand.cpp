@@ -1,4 +1,4 @@
-#include "PingCommand.hpp"
+#include "commands/PingCommand.hpp"
 
 string PingCommand::get_name() const {
     return "ping";
