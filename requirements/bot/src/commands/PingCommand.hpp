@@ -1,22 +1,19 @@
 #pragma once
 
-#include "CommandHandler.hpp"
+#include "Commands.hpp"
 
 using namespace std;
 using namespace dpp;
 
 /**
-Command /ping
+Commande /ping
 */
-class PingCommand : public ICommandHandler {
-    private:
-        ICommandHandler* next_handler = nullptr;
+class PingCommand : public ICommand{
     
-    public:
-        PingCommand();
-        ~PingCommand();
-        
-        void handle(const slashcommand_t& event) override;
-        ICommandHandler* next() override;
-        void set_next(ICommandHandler* next_handler) override;
+    string get_name() const override;
+
+    string get_description() const override;
+
+    void execute(cluster& bot, const slashcommand_t& event) override;
+
 };

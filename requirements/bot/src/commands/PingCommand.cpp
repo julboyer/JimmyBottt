@@ -1,30 +1,13 @@
 #include "PingCommand.hpp"
 
-// Constructeur
-PingCommand::PingCommand() : next_handler(nullptr) {
+string PingCommand::get_name() const {
+    return "ping";
 }
 
-// Destructeur
-PingCommand::~PingCommand() {}
-
-// Gestion de l'event 
-void PingCommand::handle(const slashcommand_t& event) {
-
-    if (event.command.get_command_name() == "ping"){
-        event.reply("Pong!");
-    } else {
-        if (this->next_handler != nullptr) {
-            this->next_handler->handle(event);
-        }
-    }
+string PingCommand::get_description() const {
+    return "Réponds pong";
 }
 
-// Obtenir le suivant
-ICommandHandler* PingCommand::next() {
-    return this->next_handler;
-}
-
-// Définir le suivant
-void PingCommand::set_next(ICommandHandler* next_handler) {
-    this->next_handler = next_handler;
-}
+void PingCommand::execute(cluster& bot, const slashcommand_t& event) {
+    event.reply("Pong!");
+};

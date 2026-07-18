@@ -1,7 +1,7 @@
 #include <dpp/dpp.h>
 #include <cstdlib>
 
-#include "commands/CommandHandler.hpp"
+#include "commands/Commands.hpp"
 #include "commands/PingCommand.hpp"
 
 using namespace std;
@@ -16,20 +16,22 @@ int main(){
     // Utilise le logger par défaut
     bot.on_log(utility::cout_logger());
 
-    ConcreteCommandHandler handler;
-    PingCommand ping_cmd;
+    PingCommand pingCommand;
 
-    handler.set_next(&ping_cmd);
+    CommandRegistry registry;
+    registry.add(pingCommand);
 
     // La fonction anonyme est un handler de TOUTES les commandes
-    bot.on_slashcommand([](const slashcommand_t& event){
+    bot.on_slashcommand([&bot, &registry](const slashcommand_t& event){
         string cmd_name = event.command.get_command_name();
-        if (cmd_name == "ping") event.reply("Pong!");
+        if ( ICommand* cmd = registry.get(cmd_name) ) {
+            cmd->execute(bot, event);
+        }
     });
 
-    bot.on_ready([&bot](const ready_t& event){
+    bot.on_ready([&bot, &registry](const ready_t& event){
         if (run_once<struct register_bot_command>()) {
-            bot.global_command_create(slashcommand("ping", "Ping pong!", bot.me.id));
+            registry.register_all_known_commands(bot);
         }
     });
 
